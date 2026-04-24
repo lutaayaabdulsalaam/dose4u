@@ -11,7 +11,7 @@ admin.initializeApp();
 // ⚠️ WARNING: This will be visible if someone gets access to your code
 // ✅ Use this for quick testing/development
 // ❌ Not recommended for production
-const DEEPSEEK_API_KEY = 'sk-6b120d0c8b7e40acbe9d8b23475a9c2e';
+const DEEPSEEK_API_KEY = 'restricted_by_deepseek_to_be_accessed_publically';
 
 // Fallback dosage calculator (used if API fails)
 const calculateFallbackDosage = (medicineType, weight, age) => {
