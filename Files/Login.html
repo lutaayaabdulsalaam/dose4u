@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Dose4U · Secure Access Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (professional icon library) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- SweetAlert2 for elegant notifications -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: radial-gradient(circle at 10% 30%, #eef2fc 0%, #dce5f2 100%);
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    /* main card container — clean, elevated, professional */
+    .login-container {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .inner-panel {
+      padding: 2.2rem 2rem 2.5rem;
+    }
+
+    /* header with brand & icon */
+    .brand-section {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-wrapper {
+      display: inline-flex;
+      background: linear-gradient(135deg, #1a6dd4, #0a4e9e);
+      width: 80px;
+      height: 80px;
+      border-radius: 28px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 20px -8px rgba(26,109,212,0.3);
+      margin-bottom: 1.2rem;
+    }
+
+    .logo-wrapper i {
+      font-size: 42px;
+      color: white;
+    }
+
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(120deg, #1a2f3f, #1a6dd4);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 0.85rem;
+      color: #5f7f9e;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    /* professional card form area (clean white) */
+    .form-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+    }
+
+    .form-title {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #1e2f3e;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-sub {
+      color: #6c86a3;
+      font-size: 0.85rem;
+      margin-bottom: 1.8rem;
+      border-left: 3px solid #1a6dd4;
+      padding-left: 12px;
+    }
+
+    .input-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .input-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #2c4056;
+      margin-bottom: 6px;
+    }
+
+    .input-label i {
+      font-size: 0.85rem;
+      color: #1a6dd4;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #ffffff;
+      transition: all 0.2s;
+      color: #1a2f3f;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #1a6dd4;
+      box-shadow: 0 0 0 3px rgba(26,109,212,0.15);
+    }
+
+    /* login button modern */
+    .login-btn {
+      width: 100%;
+      background: #1a6dd4;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .login-btn i {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .login-btn:hover {
+      background: #0f5bb8;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px -8px rgba(26,109,212,0.4);
+    }
+
+    .login-btn:hover i {
+      transform: translateX(3px);
+    }
+
+    .login-btn:active {
+      transform: translateY(1px);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.7;
+      transform: none;
+      cursor: wait;
+    }
+
+    /* signup row */
+    .signup-area {
+      margin-top: 1.8rem;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #4f6f8f;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    .signup-link {
+      color: #1a6dd4;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-bottom: 1.5px solid transparent;
+      transition: 0.2s;
+    }
+
+    .signup-link i {
+      font-size: 0.7rem;
+    }
+
+    .signup-link:hover {
+      border-bottom-color: #1a6dd4;
+      color: #0f4e96;
+    }
+
+    /* trust badge */
+    .trust-badge {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #8aa0b8;
+      border-top: 1px solid #ecf3fa;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .trust-badge span i {
+      margin-right: 6px;
+      font-size: 0.7rem;
+    }
+
+    /* responsive touch */
+    @media (max-width: 550px) {
+      body {
+        padding: 1rem;
+      }
+      .inner-panel {
+        padding: 1.6rem 1.5rem 2rem;
+      }
+      .brand-title {
+        font-size: 1.7rem;
+      }
+      .logo-wrapper {
+        width: 68px;
+        height: 68px;
+      }
+      .logo-wrapper i {
+        font-size: 34px;
+      }
+      .form-title {
+        font-size: 1.5rem;
+      }
+      .input-group input {
+        padding: 12px 16px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .login-container {
+        max-width: 540px;
+      }
+      .inner-panel {
+        padding: 2.5rem 2.4rem 2.8rem;
+      }
+    }
+
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid #1a6dd4;
+      outline-offset: 2px;
+    }
+
+    /* subtle entrance */
+    .login-container {
+      animation: fadeSlideUp 0.4s ease-out;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="inner-panel">
+    
+    <!-- Branding header -->
+    <div class="brand-section">
+      <div class="logo-wrapper">
+        <i class="fas fa-prescription-bottle-medical"></i>
+      </div>
+      <div class="brand-title">Dose4U</div>
+      <div class="brand-sub">Precision medication · Intelligent access</div>
+    </div>
+
+    <!-- Login form area -->
+    <div class="form-card">
+      <div class="form-title">Secure sign in</div>
+      <div class="form-sub">Access your clinical dashboard</div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <i class="fas fa-envelope"></i> <span>Email address</span>
+        </div>
+        <input type="email" id="email" placeholder="name@example.com" autocomplete="email">
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <i class="fas fa-lock"></i> <span>Password</span>
+        </div>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <button class="login-btn" id="loginBtn">
+        <span>Log in</span> <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <div class="signup-area">
+        <span>Don't have an account?</span>
+        <a href="signup.html" class="signup-link" id="signupLink">
+          Create account <i class="fas fa-user-plus"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- subtle security / compliance row (professional) -->
+    <div class="trust-badge">
+      <span><i class="fas fa-shield-alt"></i> HIPAA & GDPR aligned</span>
+      <span><i class="fas fa-database"></i> Encrypted records</span>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK + SweetAlert -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  // ------------------- FIREBASE CONFIGURATION (unchanged, as required) -------------------
+  const firebaseConfig = {
+    apiKey: "AIzaSyDVP4umc2k6eymoQz5R5oWF9RiCRQ9VqlE",
+    authDomain: "dose4u-b6085.firebaseapp.com",
+    projectId: "dose4u-b6085",
+    storageBucket: "dose4u-b6085.firebasestorage.app",
+    messagingSenderId: "22806799455",
+    appId: "1:22806799455:web:0bd56d584622b1d31127ea",
+    measurementId: "G-M808P3TLKL"
+  };
+
+  // Initialize Firebase only once
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const database = firebase.database();
+  const usersRef = database.ref('users');
+
+  // DOM elements
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const signupLink = document.getElementById('signupLink');
+
+  // ---------- Alert helpers (unchanged logic, professional styling) ----------
+  function showError(message) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Authentication failed',
+      text: message,
+      confirmButtonColor: '#1a6dd4',
+      background: '#ffffff',
+      backdrop: `rgba(0, 0, 0, 0.08)`,
+      confirmButtonText: 'Try again',
+      customClass: {
+        popup: 'swal-popup-style'
+      }
+    });
+  }
+
+  function showSuccessAndRedirect(message, redirectUrl = 'main.html') {
+    Swal.fire({
+      icon: 'success',
+      title: 'Access granted',
+      text: message,
+      timer: 1700,
+      showConfirmButton: false,
+      background: '#ffffff',
+      backdrop: `rgba(26,109,212,0.1)`
+    }).then(() => {
+      window.location.href = redirectUrl;
+    });
+  }
+
+  function resetLoginButton(originalText) {
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = originalText || '<span>Log in</span> <i class="fas fa-arrow-right"></i>';
+  }
+
+  // ----- MAIN LOGIN HANDLER (Firebase Realtime DB) - unchanged logic, fully preserves behavior -----
+  async function handleLogin(event) {
+    if (event) event.preventDefault();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      showError('Please enter both email and password to continue.');
+      return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+      showError('Please provide a valid email address (e.g., name@example.com).');
+      return;
+    }
+
+    // Disable button & loading state
+    loginBtn.disabled = true;
+    const originalBtnText = loginBtn.innerHTML;
+    loginBtn.innerHTML = '<span>Verifying</span> <i class="fas fa-spinner fa-pulse"></i>';
+
+    try {
+      const snapshot = await usersRef.orderByChild('email').equalTo(email).once('value');
+      let userData = null;
+      let userId = null;
+
+      snapshot.forEach((childSnap) => {
+        const data = childSnap.val();
+        if (data.email === email) {
+          userData = data;
+          userId = childSnap.key;
+        }
+      });
+
+      if (userData) {
+        // password verification (plaintext as per original schema)
+        if (userData.password === password) {
+          const displayName = userData.fullName || userData.name || 'clinician';
+          showSuccessAndRedirect(`✨ Welcome back, ${displayName}! ✨`, 'main.html');
+        } else {
+          showError('Incorrect password. Please check your credentials and try again.');
+          resetLoginButton(originalBtnText);
+        }
+      } else {
+        showError('No account associated with this email. Would you like to sign up?');
+        resetLoginButton(originalBtnText);
+      }
+    } catch (error) {
+      console.error('Firebase login error:', error);
+      showError('Connection error. Please verify your internet and try again.');
+      resetLoginButton(originalBtnText);
+    }
+  }
+
+  // attach event listener
+  loginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    handleLogin(e);
+  });
+
+  // Enable "Enter" key on both fields
+  passwordInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLogin(event);
+    }
+  });
+  emailInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLogin(event);
+    }
+  });
+
+  // signup link works natively without interference
+  if (signupLink) {
+    signupLink.addEventListener('click', (e) => {
+      // standard navigation preserved
+    });
+  }
+
+  // initial state: button active
+  window.addEventListener('load', () => {
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = '<span>Log in</span> <i class="fas fa-arrow-right"></i>';
+    // Optional: focus email on desktop for improved UX
+    if (window.innerWidth > 640) {
+      emailInput.focus();
+    }
+  });
+</script>
+</body>
+</html>

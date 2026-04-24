@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dose4U · Uganda Pediatric Formulary (30+ Medicines)</title>
+
+  <!-- Professional fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100%;
+      width: 100%;
+      background: linear-gradient(145deg, #eef2fc 0%, #e0e8f2 100%);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    /* main container — elevated dashboard card */
+    .dashboard {
+      width: 100%;
+      max-width: 1400px;
+      background: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .inner {
+      padding: 1.8rem 2rem 2rem;
+    }
+
+    /* header with brand */
+    .brand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 2px solid #ecf3fa;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, #1a6dd4, #0c4e96);
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 14px -6px rgba(26,109,212,0.3);
+    }
+
+    .logo-icon i {
+      font-size: 26px;
+      color: white;
+    }
+
+    .brand-text h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(120deg, #1c2f40, #1a6dd4);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: #5f7f9e;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .region-badge {
+      background: #eff5ff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #1a6dd4;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .region-badge i {
+      font-size: 0.8rem;
+    }
+
+    .count-badge {
+      background: #1a6dd4;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* main title section */
+    .page-headline {
+      margin-bottom: 1.8rem;
+    }
+
+    .page-headline h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1e2f3e;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .page-headline h2 i {
+      color: #1a6dd4;
+      font-size: 1.8rem;
+    }
+
+    .page-sub {
+      color: #6c86a3;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      border-left: 3px solid #1a6dd4;
+      padding-left: 12px;
+    }
+
+    /* medicine card grid - 3 columns for larger displays */
+    .formulary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.3rem;
+      margin: 0.5rem 0 1.5rem;
+    }
+
+    .med-card {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px #edf2f7;
+      overflow: hidden;
+      border: 1px solid #f0f4fa;
+    }
+
+    .med-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px #e2eaf5;
+    }
+
+    .med-card-content {
+      padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .med-icon {
+      background: #f0f6fe;
+      width: 54px;
+      height: 54px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      color: #1a6dd4;
+    }
+
+    .med-details {
+      flex: 1;
+    }
+
+    .med-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #1a2f3f;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .med-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      background: #f5f9ff;
+      padding: 3px 10px;
+      border-radius: 40px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: #2c5f8a;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag i {
+      font-size: 0.6rem;
+      color: #1a6dd4;
+    }
+
+    /* source footer */
+    .source-footer {
+      background: #f9fbfe;
+      border-radius: 1rem;
+      padding: 0.9rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      border: 1px solid #ecf3f9;
+    }
+
+    .source-text {
+      font-size: 0.7rem;
+      color: #6c86a3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .source-text i {
+      font-size: 0.8rem;
+      color: #1a6dd4;
+    }
+
+    .back-link {
+      background: transparent;
+      border: 1px solid #cde0f0;
+      padding: 0.45rem 1.2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1a6dd4;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link i {
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+    }
+
+    .back-link:hover {
+      background: #1a6dd4;
+      color: white;
+      border-color: #1a6dd4;
+    }
+
+    .back-link:hover i {
+      transform: translateX(-3px);
+    }
+
+    /* responsive */
+    @media (max-width: 780px) {
+      body {
+        padding: 1rem;
+      }
+      .inner {
+        padding: 1.3rem 1.2rem 1.5rem;
+      }
+      .formulary-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .brand-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .page-headline h2 {
+        font-size: 1.3rem;
+      }
+      .med-card-content {
+        padding: 1rem;
+      }
+      .med-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .formulary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1600px) {
+      .formulary-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* subtle animation */
+    .med-card {
+      animation: fadeSlide 0.3s ease backwards;
+    }
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard">
+  <div class="inner">
+    
+    <!-- professional header -->
+    <div class="brand-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fas fa-prescription-bottle-medical"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Dose4U · Uganda</h1>
+          <p>Clinical reference · pediatric essential medicines</p>
+        </div>
+      </div>
+      <div class="region-badge">
+        <i class="fas fa-map-marker-alt"></i> <span>Uganda National Formulary</span>
+        <span class="count-badge"><i class="fas fa-capsules"></i> 30+ medicines</span>
+      </div>
+    </div>
+
+    <!-- title row -->
+    <div class="page-headline">
+      <h2>
+        <i class="fas fa-child"></i> 
+        Comprehensive Pediatric Formulary
+      </h2>
+      <div class="page-sub">
+        Essential medicines for children — Uganda National Medical Standards (NMS), WHO EMLc, and clinical guidelines
+      </div>
+    </div>
+
+    <!-- medicine grid (30+ items, expanded formulary) -->
+    <div class="formulary-grid">
+
+      <!-- 1. Coartem -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Coartem (artemether/lumefantrine)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-biohazard"></i> malaria</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 5–25 kg</span>
+              <span class="tag"><i class="fas fa-building"></i> NMS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Amoxicillin syrup -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧪</div>
+          <div class="med-details">
+            <div class="med-name">Amoxicillin syrup 125mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-lungs"></i> URTI/pneumonia</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 15mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> 7 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Zinc sulfate -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💧</div>
+          <div class="med-details">
+            <div class="med-name">Zinc sulfate 20mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-poop"></i> diarrhoea</span>
+              <span class="tag"><i class="fas fa-baby"></i> >6 mo</span>
+              <span class="tag"><i class="fas fa-clock"></i> 10–14 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. ORS -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🫧</div>
+          <div class="med-details">
+            <div class="med-name">ORS (low osmolarity)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-tint"></i> dehydration</span>
+              <span class="tag"><i class="fas fa-baby-carriage"></i> all ages</span>
+              <span class="tag"><i class="fas fa-globe"></i> WHO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Paracetamol syrup -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧃</div>
+          <div class="med-details">
+            <div class="med-name">Paracetamol syrup 120mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-thermometer-half"></i> fever/pain</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 15mg/kg</span>
+              <span class="tag"><i class="fas fa-hourglass-half"></i> q6h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Albendazole -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Albendazole 200mg/5ml susp</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-worm"></i> deworming</span>
+              <span class="tag"><i class="fas fa-baby"></i> >1 year</span>
+              <span class="tag"><i class="fas fa-syringe"></i> single dose</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Salbutamol syrup -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💨</div>
+          <div class="med-details">
+            <div class="med-name">Salbutamol syrup 2mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-lungs"></i> asthma/wheeze</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 0.1mg/kg</span>
+              <span class="tag"><i class="fas fa-clock"></i> q6–8h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Ceftriaxone (ped IM) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧪</div>
+          <div class="med-details">
+            <div class="med-name">Ceftriaxone 250mg/vial (IM)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-lungs"></i> pneumonia/sepsis</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 50mg/kg</span>
+              <span class="tag"><i class="fas fa-syringe"></i> IM/IV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Vitamin A -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💧</div>
+          <div class="med-details">
+            <div class="med-name">Vitamin A (retinol caps 100k IU)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-eye"></i> deficiency</span>
+              <span class="tag"><i class="fas fa-baby"></i> 6–59 mo</span>
+              <span class="tag"><i class="fas fa-calendar-week"></i> every 6 mo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Ibuprofen susp -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧃</div>
+          <div class="med-details">
+            <div class="med-name">Ibuprofen susp 100mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-thermometer-full"></i> pain/fever</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 10mg/kg</span>
+              <span class="tag"><i class="fas fa-baby"></i> >6 mo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Mebendazole -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Mebendazole 100mg/5ml susp</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-worm"></i> helminths</span>
+              <span class="tag"><i class="fas fa-baby"></i> >2 years</span>
+              <span class="tag"><i class="fas fa-clock"></i> 3 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Oral Rehydration Solution (prepack) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🥤</div>
+          <div class="med-details">
+            <div class="med-name">WHO-ORS sachets</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-tint"></i> rehydration</span>
+              <span class="tag"><i class="fas fa-infinity"></i> all ages</span>
+              <span class="tag"><i class="fas fa-heartbeat"></i> first-line</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Ampicillin + Cloxacillin susp -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧪</div>
+          <div class="med-details">
+            <div class="med-name">Ampiclox (ampicillin/cloxacillin) susp</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-bacteria"></i> bacterial infections</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 25mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> 5–7 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Gentamicin (injection) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💉</div>
+          <div class="med-details">
+            <div class="med-name">Gentamicin 40mg/ml injection</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-microscope"></i> severe sepsis</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 7.5mg/kg</span>
+              <span class="tag"><i class="fas fa-syringe"></i> IM/IV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. Artesunate injection -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💉</div>
+          <div class="med-details">
+            <div class="med-name">Artesunate 60mg injection</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-biohazard"></i> severe malaria</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 2.4mg/kg</span>
+              <span class="tag"><i class="fas fa-clock"></i> IV/IM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Diazepam rectal solution -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧠</div>
+          <div class="med-details">
+            <div class="med-name">Diazepam rectal tube 5mg/ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-brain"></i> seizures</span>
+              <span class="tag"><i class="fas fa-baby"></i> emergency</span>
+              <span class="tag"><i class="fas fa-clock"></i> stat dose</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 17. Prednisolone syrup -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Prednisolone syrup 15mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-allergies"></i> asthma/nephrotic</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 1-2mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> taper</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18. Ferrous sulfate drops -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🩸</div>
+          <div class="med-details">
+            <div class="med-name">Ferrous sulfate drops 75mg/ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-droplet"></i> anemia</span>
+              <span class="tag"><i class="fas fa-baby"></i> 6–24 mo</span>
+              <span class="tag"><i class="fas fa-calendar"></i> 3 months</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. Folic acid tablets (crushable) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Folic acid 5mg tablets</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-droplet"></i> megaloblastic anemia</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 0.5mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> daily</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 20. Nystatin oral suspension -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🍼</div>
+          <div class="med-details">
+            <div class="med-name">Nystatin oral susp 100k IU/ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-fungal"></i> oral thrush</span>
+              <span class="tag"><i class="fas fa-baby"></i> neonates+</span>
+              <span class="tag"><i class="fas fa-clock"></i> q6h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 21. Metronidazole susp -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧫</div>
+          <div class="med-details">
+            <div class="med-name">Metronidazole 200mg/5ml susp</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-poop"></i> amoebiasis/giardia</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 35mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> 7 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 22. Chloramphenicol susp -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧪</div>
+          <div class="med-details">
+            <div class="med-name">Chloramphenicol 250mg/5ml susp</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-lungs"></i> typhoid/pneumonia</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 50mg/kg</span>
+              <span class="tag"><i class="fas fa-clock"></i> q6h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 23. Hydrocortisone cream (topical) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧴</div>
+          <div class="med-details">
+            <div class="med-name">Hydrocortisone 1% cream</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-allergies"></i> dermatitis</span>
+              <span class="tag"><i class="fas fa-baby"></i> >2 years</span>
+              <span class="tag"><i class="fas fa-clock"></i> BID</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 24. Clotrimazole oral gel -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🍬</div>
+          <div class="med-details">
+            <div class="med-name">Clotrimazole 1% oral gel</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-fungal"></i> oral candidiasis</span>
+              <span class="tag"><i class="fas fa-baby"></i> infants</span>
+              <span class="tag"><i class="fas fa-clock"></i> QID</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 25. Ivermectin (for scabies) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Ivermectin 3mg tablets</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-allergies"></i> scabies/strongyloides</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 200mcg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> single dose</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 26. Sodium valproate syrup -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">⚡</div>
+          <div class="med-details">
+            <div class="med-name">Sodium valproate 200mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-brain"></i> epilepsy</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 15-30mg/kg</span>
+              <span class="tag"><i class="fas fa-calendar"></i> maintenance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 27. Phenobarbitone oral soln -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Phenobarbitone 15mg/5ml</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-brain"></i> neonatal seizures</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 3-5mg/kg</span>
+              <span class="tag"><i class="fas fa-clock"></i> daily</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 28. Multivitamin drops -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🥗</div>
+          <div class="med-details">
+            <div class="med-name">Multivitamin drops (A, C, D)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-apple-alt"></i> nutritional support</span>
+              <span class="tag"><i class="fas fa-baby"></i> 6mo–5y</span>
+              <span class="tag"><i class="fas fa-calendar"></i> daily</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 29. Calcium gluconate injection -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🦴</div>
+          <div class="med-details">
+            <div class="med-name">Calcium gluconate 10% inj</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-heartbeat"></i> hypocalcemia</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 100-200mg/kg</span>
+              <span class="tag"><i class="fas fa-syringe"></i> slow IV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 30. Dexamethasone oral soln -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">💊</div>
+          <div class="med-details">
+            <div class="med-name">Dexamethasone 0.5mg/5ml soln</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-lungs"></i> croup/asthma</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 0.15-0.6mg/kg</span>
+              <span class="tag"><i class="fas fa-clock"></i> single/taper</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 31. Meropenem (severe infections) -->
+      <div class="med-card">
+        <div class="med-card-content">
+          <div class="med-icon">🧪</div>
+          <div class="med-details">
+            <div class="med-name">Meropenem 1g vial (pediatric)</div>
+            <div class="med-tags">
+              <span class="tag"><i class="fas fa-microscope"></i> severe hospital infections</span>
+              <span class="tag"><i class="fas fa-weight-scale"></i> 20-40mg/kg</span>
+              <span class="tag"><i class="fas fa-syringe"></i> IV q8h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- footer with source and back navigation -->
+    <div class="source-footer">
+      <div class="source-text">
+        <i class="fas fa-notes-medical"></i>
+        <span>⚕️ Uganda National Medical Stores · WHO Essential Medicines List for Children (EMLc) · Clinical evidence-based reference — 31 essential pediatric medicines</span>
+      </div>
+      <a href="main.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

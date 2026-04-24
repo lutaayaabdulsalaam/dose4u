@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Dose4U · Clinical AI Dose Advisor | Precision Dosing</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6 Professional -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html, body{
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(145deg, #eef2fc 0%, #e0e8f2 100%);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+/* Main container - clean medical dashboard card */
+.app{
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 2rem;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.inner-content {
+    padding: 32px 32px 44px;
+}
+
+/* Back Button */
+.back-button {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: #f0f4fa;
+    border-radius: 40px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #1a6dd4;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    z-index: 20;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+}
+
+.back-button i {
+    font-size: 12px;
+}
+
+.back-button:hover {
+    background: #e6edf6;
+    transform: translateX(-3px);
+}
+
+/* Header */
+.header{
+    text-align: center;
+    margin-bottom: 28px;
+    flex-shrink: 0;
+}
+
+.logo-circle{
+    background: linear-gradient(135deg, #1a6dd4, #0c4e96);
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
+    margin: 0 auto 16px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 20px -8px rgba(26,109,212,0.3);
+}
+
+.logo-circle i {
+    font-size: 40px;
+    color: white;
+}
+
+.app-name{
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    background: linear-gradient(120deg, #1c2f40, #1a6dd4);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.tagline {
+    font-size: 13px;
+    color: #5f7f9e;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+/* Form card */
+.card{
+    background: #ffffff;
+    border-radius: 1.5rem;
+    padding: 0;
+    width: 100%;
+}
+
+.form-group{
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2c4056;
+}
+
+.form-group label i {
+    color: #1a6dd4;
+    font-size: 14px;
+}
+
+.form-group input, .form-group select{
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    outline: none;
+    font-size: 14px;
+    background: #ffffff;
+    transition: 0.2s;
+    font-weight: 500;
+    color: #1a2f3f;
+}
+
+.form-group input:focus, .form-group select:focus{
+    border-color: #1a6dd4;
+    box-shadow: 0 0 0 3px rgba(26,109,212,0.12);
+}
+
+/* Two-column for weight/age */
+.row-2cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* AI button */
+.ai-button{
+    background: linear-gradient(95deg, #1a6dd4, #0f5bb8);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.25s ease;
+    margin: 8px 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ai-button i {
+    font-size: 18px;
+}
+
+.ai-button:hover{
+    transform: translateY(-2px);
+    background: linear-gradient(95deg, #0f5bb8, #0a4a96);
+    box-shadow: 0 8px 20px rgba(26,109,212,0.35);
+}
+
+/* Age badge */
+.age-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #eff5ff;
+    color: #1a6dd4;
+    margin-left: 10px;
+}
+
+/* header flex row */
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.header-flex h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e2f3e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Medicine count badge */
+.med-badge {
+    background: #e6f0ff;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a6dd4;
+}
+
+/* Responsive */
+@media (max-width: 550px) {
+    body { padding: 16px; }
+    .inner-content { padding: 20px 20px 32px; }
+    .logo-circle { width: 64px; height: 64px; }
+    .logo-circle i { font-size: 32px; }
+    .app-name { font-size: 24px; }
+    .row-2cols { grid-template-columns: 1fr; gap: 12px; }
+    .form-group input, .form-group select { padding: 10px 14px; }
+    .ai-button { padding: 12px 16px; font-size: 14px; }
+    .back-button { top: 16px; left: 16px; padding: 6px 14px; font-size: 12px; }
+}
+
+@media (min-width: 1024px) {
+    .app { max-width: 720px; }
+    .inner-content { padding: 38px 40px 48px; }
+    .logo-circle { width: 88px; height: 88px; }
+    .logo-circle i { font-size: 44px; }
+    .app-name { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+    <!-- BACK BUTTON -->
+    <div class="back-button" id="backButton">
+        <i class="fas fa-arrow-left"></i> <span>Back</span>
+    </div>
+
+    <div class="inner-content">
+        <div class="header">
+            <div class="logo-circle">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <div class="app-name">Dose4U Clinical AI</div>
+            <div class="tagline">Evidence-based dosing · Tablet or Liquid intelligence</div>
+        </div>
+
+        <div class="card">
+            <div class="header-flex">
+                <h4><i class="fas fa-user-md"></i> Patient clinical profile</h4>
+                <span id="ageCategoryDisplay" class="age-badge"><i class="fas fa-baby"></i> Infant</span>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-signature"></i> Full name</label>
+                <input type="text" id="patientName" placeholder="e.g., Baby Olivia, James M." value="">
+            </div>
+
+            <div class="row-2cols">
+                <div class="form-group">
+                    <label><i class="fas fa-weight-scale"></i> Weight (kg)</label>
+                    <input type="number" id="patientWeight" placeholder="e.g., 8.5" step="0.1" value="">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-cake-candles"></i> Age (years)</label>
+                    <input type="number" id="patientAge" placeholder="e.g., 1.5" step="0.1" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-prescription-bottle"></i> Select medicine</label>
+                <select id="medicineType">
+                    <option value="paracetamol">Paracetamol (Fever / Pain)</option>
+                    <option value="amoxicillin">Amoxicillin (Bacterial infection)</option>
+                    <option value="ibuprofen">Ibuprofen (Inflammation / Fever)</option>
+                    <option value="coartem">Coartem (Malaria - artemether/lumefantrine)</option>
+                    <option value="albendazole">Albendazole (Deworming)</option>
+                    <option value="azithromycin">Azithromycin (Respiratory / ENT)</option>
+                    <option value="cefixime">Cefixime (Third-gen cephalosporin)</option>
+                    <option value="salbutamol">Salbutamol (Asthma / Bronchospasm)</option>
+                    <option value="metronidazole">Metronidazole (Anaerobic / Giardia)</option>
+                    <option value="clotrimazole">Clotrimazole (Oral thrush / fungal)</option>
+                    <option value="zinc">Zinc sulfate (Diarrhoea management)</option>
+                    <option value="prednisolone">Prednisolone (Inflammatory / Asthma)</option>
+                </select>
+            </div>
+
+            <button class="ai-button" id="prescribeBtn">
+                <i class="fas fa-brain"></i> <span>AI Dose Recommendation</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <!-- subtle clinical note -->
+        <div style="margin-top: 20px; text-align: center; font-size: 11px; color: #8aa0b8;">
+            <i class="fas fa-shield-alt"></i> WHO & Ugandan clinical guidelines · Weight-based precision dosing
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // ---- Back button functionality ----
+    const backBtn = document.getElementById('backButton');
+    if (backBtn) {
+        backBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'main.html';
+            }
+        });
+    }
+
+    // ---- Age category helper ----
+    function getAgeCategory(age) {
+        if (age < 1) return { name: '👶 Infant (0-12 months)', emoji: '👶', class: 'infant' };
+        if (age < 3) return { name: '🧒 Toddler (1-3 years)', emoji: '🧒', class: 'toddler' };
+        if (age < 6) return { name: '🧒 Preschool (3-6 years)', emoji: '🧒', class: 'preschool' };
+        if (age < 12) return { name: '👦 Child (6-12 years)', emoji: '👦', class: 'child' };
+        if (age < 18) return { name: '👨 Teen (12-18 years)', emoji: '👨', class: 'teen' };
+        if (age < 65) return { name: '👨 Adult (18-65 years)', emoji: '👨', class: 'adult' };
+        return { name: '👴 Elderly (65+)', emoji: '👴', class: 'elderly' };
+    }
+
+    const ageInput = document.getElementById('patientAge');
+    const ageDisplay = document.getElementById('ageCategoryDisplay');
+    ageInput.addEventListener('input', function() {
+        let ageVal = parseFloat(this.value);
+        if (!isNaN(ageVal) && ageVal > 0) {
+            ageDisplay.innerHTML = `<i class="fas fa-user"></i> ${getAgeCategory(ageVal).name}`;
+        } else {
+            ageDisplay.innerHTML = `<i class="fas fa-baby"></i> Infant`;
+        }
+    });
+
+    // ---------- AI LOGIC: ENHANCED with form determination + new medicines ----------
+    function determineFormAndDose(medicine, age, weight, patientName) {
+        let result = {
+            form: "",            
+            doseValue: 0,
+            doseUnit: "",
+            adminDetails: "",
+            concentrationInfo: "",
+            spoonMl: "",
+            warning: "",
+            frequency: "",
+            totalDaily: ""
+        };
+
+        const isInfant = age < 1;
+        const isToddler = age >= 1 && age < 3;
+        const isChild = age >= 3 && age < 12;
+        const isElderly = age >= 65;
+
+        switch(medicine) {
+            case 'paracetamol':
+                result.frequency = "Every 6-8 hours (max 4 doses/day)";
+                if (isInfant) {
+                    result.form = "Liquid (Infant Drops)";
+                    result.doseValue = Math.min(10 * weight, 60);
+                    result.doseUnit = "mg";
+                    result.concentrationInfo = "Concentration: 80mg/0.8ml drops or 120mg/5ml syrup";
+                    let mlDose = (result.doseValue / 120) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of pediatric syrup (120mg/5ml). Use oral syringe.`;
+                    result.spoonMl = `≈ ${mlDose.toFixed(1)} ml (calibrated dropper)`;
+                    result.warning = "👶 INFANT: Never exceed 4 doses in 24h.";
+                } 
+                else if (isToddler) {
+                    result.form = "Liquid (Pediatric Syrup)";
+                    let doseMg = Math.min(15 * weight, 180);
+                    result.doseValue = doseMg;
+                    let mlDose = (doseMg / 120) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 120mg/5ml syrup. Shake well.`;
+                }
+                else if (isChild) {
+                    let doseMg = Math.min(15 * weight, 500);
+                    result.doseValue = doseMg;
+                    if (weight > 18 && doseMg >= 160) {
+                        result.form = "Tablet (Chewable)";
+                        let tabletCount = Math.ceil(doseMg / 160);
+                        result.doseUnit = `${tabletCount} x 160mg tablet`;
+                        result.adminDetails = `Give ${tabletCount} chewable tablet(s) of 160mg.`;
+                    } else {
+                        result.form = "Liquid Syrup";
+                        let mlDose = (doseMg / 120) * 5;
+                        result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 120mg/5ml syrup.`;
+                    }
+                }
+                else {
+                    result.form = "Tablet";
+                    let doseMg = (weight < 55) ? 500 : 650;
+                    result.doseValue = doseMg;
+                    result.doseUnit = `${doseMg} mg (${doseMg/500} tablet)`;
+                    result.adminDetails = `Take ${doseMg/500} tablet(s) of 500mg with water.`;
+                }
+                break;
+
+            case 'amoxicillin':
+                result.frequency = "Every 12 hours";
+                if (isInfant || isToddler) {
+                    result.form = "Liquid Suspension";
+                    let doseMg = Math.min(20 * weight, 200);
+                    let mlDose = (doseMg / 125) * 5;
+                    result.doseValue = doseMg;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 125mg/5ml suspension twice daily.`;
+                }
+                else if (isChild) {
+                    let doseMg = Math.min(22.5 * weight, 400);
+                    result.doseValue = doseMg;
+                    if (weight > 25) {
+                        result.form = "Tablet";
+                        let tabletCount = Math.ceil(doseMg / 250);
+                        result.doseUnit = `${tabletCount} x 250mg`;
+                        result.adminDetails = `Give ${tabletCount} tablet(s) of 250mg every 12h.`;
+                    } else {
+                        result.form = "Liquid";
+                        let mlDose = (doseMg / 250) * 5;
+                        result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 250mg/5ml suspension.`;
+                    }
+                }
+                else {
+                    result.form = "Tablet";
+                    result.doseValue = (weight < 60) ? 500 : 875;
+                    result.doseUnit = `${result.doseValue} mg`;
+                    result.adminDetails = `Take ${result.doseValue}mg every 12 hours.`;
+                }
+                break;
+
+            case 'ibuprofen':
+                result.frequency = "Every 8 hours as needed";
+                if (isInfant && weight >= 5) {
+                    result.form = "Liquid Drops";
+                    let doseMg = Math.min(5 * weight, 50);
+                    let mlDose = (doseMg / 50) * 1.25;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of infant drops (50mg/1.25ml). >6 months only.`;
+                } 
+                else if (isToddler || isChild) {
+                    let doseMg = Math.min(7.5 * weight, 150);
+                    result.form = "Liquid Suspension";
+                    let mlDose = (doseMg / 100) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 100mg/5ml suspension.`;
+                }
+                else {
+                    result.form = "Tablet";
+                    result.doseValue = (weight < 60) ? 200 : 400;
+                    result.doseUnit = `${result.doseValue} mg`;
+                    result.adminDetails = `Take ${result.doseValue}mg with food.`;
+                }
+                break;
+
+            case 'coartem':
+                result.frequency = "Twice daily for 3 days";
+                result.form = "Tablet (Dispersible)";
+                if (weight >= 5 && weight < 15) {
+                    result.doseValue = 1;
+                    result.doseUnit = "tablet (20/120mg)";
+                    result.adminDetails = "Give 1 tablet per dose (20/120mg). Crush for infants.";
+                } else if (weight >= 15 && weight < 25) {
+                    result.doseValue = 2;
+                    result.doseUnit = "tablets (40/240mg)";
+                    result.adminDetails = "Give 2 tablets per dose.";
+                } else if (weight >= 25 && weight < 35) {
+                    result.doseValue = 3;
+                    result.doseUnit = "tablets (60/360mg)";
+                    result.adminDetails = "Give 3 tablets per dose.";
+                } else {
+                    result.doseValue = 4;
+                    result.doseUnit = "tablets (80/480mg)";
+                    result.adminDetails = "Give 4 tablets per dose (adult regimen).";
+                }
+                result.warning = "Take with fatty food (milk) for absorption.";
+                break;
+
+            case 'albendazole':
+                result.frequency = "Single dose";
+                if (isInfant || weight < 10) {
+                    result.form = "Liquid Suspension";
+                    result.doseValue = 200;
+                    result.doseUnit = "mg (10ml)";
+                    result.adminDetails = "Give 200mg (10ml) oral suspension once.";
+                } else {
+                    result.form = "Chewable Tablet";
+                    result.doseValue = 400;
+                    result.doseUnit = "400mg tablet";
+                    result.adminDetails = "Give 1 tablet (400mg), chew thoroughly.";
+                }
+                break;
+
+            case 'azithromycin':
+                result.frequency = "Once daily for 3 days";
+                if (isInfant || isToddler) {
+                    result.form = "Liquid Suspension";
+                    let doseMg = Math.min(10 * weight, 200);
+                    let mlDose = (doseMg / 200) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 200mg/5ml suspension once daily.`;
+                } else if (isChild) {
+                    let doseMg = Math.min(10 * weight, 400);
+                    if (weight > 20) {
+                        result.form = "Tablet";
+                        result.doseUnit = `${doseMg/200} x 200mg tablet`;
+                        result.adminDetails = `Give ${doseMg/200} tablet(s) of 200mg.`;
+                    } else {
+                        result.form = "Liquid";
+                        let mlDose = (doseMg / 200) * 5;
+                        result.adminDetails = `Give ${mlDose.toFixed(1)} ml suspension.`;
+                    }
+                } else {
+                    result.form = "Tablet";
+                    result.doseValue = 500;
+                    result.doseUnit = "500mg";
+                    result.adminDetails = "Take 500mg once daily for 3 days.";
+                }
+                break;
+
+            case 'cefixime':
+                result.frequency = "Once or twice daily";
+                if (isInfant || isToddler || weight < 15) {
+                    result.form = "Liquid Suspension";
+                    let doseMg = Math.min(4 * weight, 50);
+                    let mlDose = (doseMg / 100) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 100mg/5ml suspension twice daily.`;
+                } else {
+                    result.form = "Tablet";
+                    result.doseValue = (weight < 50) ? 200 : 400;
+                    result.doseUnit = `${result.doseValue} mg`;
+                    result.adminDetails = `Give ${result.doseValue}mg once daily.`;
+                }
+                break;
+
+            case 'salbutamol':
+                result.frequency = "Every 6-8h as needed";
+                if (isInfant || isToddler) {
+                    result.form = "Liquid Syrup";
+                    let doseMg = Math.min(0.1 * weight, 2);
+                    let mlDose = (doseMg / 2) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 2mg/5ml syrup OR nebulizer if severe.`;
+                } else if (isChild) {
+                    result.form = "Inhaler + spacer or Tablet";
+                    result.doseValue = 2;
+                    result.doseUnit = "2mg tablet or 2 puffs";
+                    result.adminDetails = "2mg tablet every 8h OR 2 puffs via inhaler+spacer.";
+                } else {
+                    result.form = "Tablet or Inhaler";
+                    result.doseValue = 4;
+                    result.doseUnit = "4mg tablet or 2-4 puffs";
+                    result.adminDetails = "Take 4mg tablet or use rescue inhaler.";
+                }
+                break;
+
+            // New medicines
+            case 'metronidazole':
+                result.frequency = "Three times daily for 7 days";
+                if (isInfant || isToddler) {
+                    result.form = "Liquid Suspension";
+                    let doseMg = Math.min(22.5 * weight, 150);
+                    let mlDose = (doseMg / 200) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 200mg/5ml suspension TID.`;
+                } else {
+                    result.form = "Tablet";
+                    result.doseValue = (weight < 30) ? 200 : 400;
+                    result.doseUnit = `${result.doseValue} mg`;
+                    result.adminDetails = `Give ${result.doseValue}mg three times daily.`;
+                }
+                break;
+
+            case 'clotrimazole':
+                result.frequency = "Four times daily for 7 days";
+                result.form = "Oral Gel / Liquid";
+                result.doseValue = 1;
+                result.doseUnit = "1ml (10mg/ml)";
+                result.adminDetails = "Apply 1ml oral gel to affected areas in mouth QID.";
+                result.warning = "Use after feeds, avoid immediate swallowing.";
+                break;
+
+            case 'zinc':
+                result.frequency = "Once daily for 10-14 days";
+                result.form = "Liquid / Dispersible tablet";
+                result.doseValue = (age < 6) ? 10 : 20;
+                result.doseUnit = "mg";
+                result.adminDetails = `Give ${result.doseValue}mg zinc once daily during diarrhoea episode.`;
+                result.concentrationInfo = "Zinc sulfate 20mg dispersible or syrup 10mg/5ml.";
+                break;
+
+            case 'prednisolone':
+                result.frequency = "Once daily (short course)";
+                if (isInfant || isToddler || isChild) {
+                    result.form = "Liquid Syrup";
+                    let doseMg = Math.min(1 * weight, 30);
+                    let mlDose = (doseMg / 15) * 5;
+                    result.adminDetails = `Give ${mlDose.toFixed(1)} ml of 15mg/5ml syrup once daily.`;
+                } else {
+                    result.form = "Tablet";
+                    result.doseValue = (weight < 50) ? 20 : 40;
+                    result.doseUnit = `${result.doseValue} mg`;
+                    result.adminDetails = `Take ${result.doseValue}mg once daily, taper as directed.`;
+                }
+                result.warning = "Do not stop abruptly. Prescriber guidance required.";
+                break;
+
+            default:
+                result.form = "Consult physician";
+                result.adminDetails = "Please contact healthcare provider for precise dosing.";
+        }
+        return result;
+    }
+
+    // Main AI action
+    document.getElementById('prescribeBtn').addEventListener('click', () => {
+        const name = document.getElementById('patientName').value.trim() || "Patient";
+        const weight = parseFloat(document.getElementById('patientWeight').value);
+        const age = parseFloat(document.getElementById('patientAge').value);
+        const medicine = document.getElementById('medicineType').value;
+        const medicineLabel = document.getElementById('medicineType').options[document.getElementById('medicineType').selectedIndex]?.text || medicine;
+
+        if (isNaN(weight) || weight <= 0 || weight > 250 || isNaN(age) || age <= 0 || age > 130) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid parameters',
+                text: 'Please enter valid weight (1-250 kg) and age (0.1-130 years).',
+                confirmButtonColor: '#1a6dd4'
+            });
+            return;
+        }
+
+        const ageCat = getAgeCategory(age);
+        const aiDecision = determineFormAndDose(medicine, age, weight, name);
+
+        const formIcon = aiDecision.form.toLowerCase().includes("liquid") ? "💧🧴" : (aiDecision.form.toLowerCase().includes("tablet") ? "💊" : "📋");
+        
+        const resultHTML = `
+            <div style="text-align: left; font-family: 'Inter'; max-height: 550px; overflow-y: auto; padding-right: 6px;">
+                <div style="background: linear-gradient(135deg, #f8fafc, #ffffff); border-radius: 20px; padding: 20px; border-left: 5px solid #1a6dd4; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                        <span style="font-size: 44px;">${formIcon}</span>
+                        <div>
+                            <h3 style="margin:0; color:#0f5bb8; font-weight:700;">🧠 Dose4U Clinical AI</h3>
+                            <p style="margin:0; font-size:12px; color:#5f7f9e;">${ageCat.name} · ${weight} kg · ${age} yrs</p>
+                        </div>
+                    </div>
+                    <p><strong><i class="fas fa-user"></i> Patient:</strong> ${name}</p>
+                    <p><strong><i class="fas fa-capsules"></i> Medicine:</strong> ${medicineLabel}</p>
+                    <div style="background: #eff5ff; border-radius: 18px; padding: 14px; margin: 14px 0;">
+                        <p style="margin:0 0 6px; font-weight:800; color:#1a6dd4;"><i class="fas fa-microchip"></i> AI DECISION: <span style="font-size: 17px;">${aiDecision.form}</span></p>
+                        <p style="margin:6px 0;"><strong><i class="fas fa-weight-scale"></i> Dose:</strong> ${aiDecision.doseValue} ${aiDecision.doseUnit}</p>
+                        <p style="margin:6px 0;"><strong><i class="fas fa-clock"></i> Frequency:</strong> ${aiDecision.frequency || "As prescribed"}</p>
+                        ${aiDecision.concentrationInfo ? `<p style="margin:6px 0;"><strong><i class="fas fa-flask"></i> Concentration:</strong> ${aiDecision.concentrationInfo}</p>` : ''}
+                        <p style="margin:8px 0 0 0;"><strong><i class="fas fa-syringe"></i> Administration:</strong> ${aiDecision.adminDetails}</p>
+                        ${aiDecision.spoonMl ? `<p style="margin:6px 0 0 0;"><strong><i class="fas fa-spoon"></i> Measure:</strong> ${aiDecision.spoonMl}</p>` : ''}
+                    </div>
+                    ${aiDecision.warning ? `<div style="background: #fff5e8; padding: 10px; border-radius: 14px; margin-top: 10px;"><i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> <strong>Clinical note:</strong> ${aiDecision.warning}</div>` : ''}
+                    <p style="font-size: 10px; color: #8aa0b8; margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px;"><i class="fas fa-database"></i> Based on WHO, Ugandan NMS & peer-reviewed dosing references. AI recommends ${aiDecision.form.toLowerCase()} format for safety.</p>
+                </div>
+            </div>
+        `;
+
+        Swal.fire({
+            title: '✨ AI Dose Recommendation',
+            html: resultHTML,
+            icon: 'success',
+            confirmButtonText: 'Apply & continue',
+            confirmButtonColor: '#1a6dd4',
+            background: '#ffffff',
+            width: '560px',
+            backdrop: `rgba(26,109,212,0.1)`,
+        });
+    });
+</script>
+</body>
+</html>

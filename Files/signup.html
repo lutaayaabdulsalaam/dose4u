@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dose4U · Create clinical account</title>
+    
+    <!-- Professional font: Inter + fallback -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 for crisp medical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- SweetAlert2 for elegant notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        /* full viewport with soft medical gradient */
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(135deg, #f0f6fe 0%, #e2edf9 100%);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        /* main container — elevated card design */
+        .signup-container {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .inner-content {
+            padding: 2rem 2rem 2.2rem;
+        }
+
+        /* brand area */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 1.6rem;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            background: linear-gradient(145deg, #1a6dd4, #0c4e96);
+            width: 72px;
+            height: 72px;
+            border-radius: 24px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 18px -8px rgba(26,109,212,0.3);
+            margin-bottom: 1rem;
+        }
+
+        .logo-badge i {
+            font-size: 36px;
+            color: white;
+        }
+
+        .brand-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, #1c2f40, #1a6dd4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .brand-tag {
+            font-size: 0.8rem;
+            color: #5f7f9e;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        /* form card */
+        .form-card {
+            background: #ffffff;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #1e2f3e;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-sub {
+            color: #6c86a3;
+            font-size: 0.8rem;
+            margin-bottom: 1.8rem;
+            border-left: 3px solid #1a6dd4;
+            padding-left: 12px;
+        }
+
+        /* input groups with modern style */
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2c4056;
+            margin-bottom: 6px;
+        }
+
+        .input-label i {
+            font-size: 0.75rem;
+            color: #1a6dd4;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: #ffffff;
+            transition: all 0.2s;
+            color: #1a2f3f;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #1a6dd4;
+            box-shadow: 0 0 0 3px rgba(26,109,212,0.12);
+        }
+
+        /* signup button */
+        .signup-btn {
+            width: 100%;
+            background: #1a6dd4;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .signup-btn i {
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .signup-btn:hover {
+            background: #0f5bb8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(26,109,212,0.4);
+        }
+
+        .signup-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        .signup-btn:active {
+            transform: translateY(1px);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.7;
+            transform: none;
+            cursor: wait;
+        }
+
+        /* login redirect row */
+        .login-redirect {
+            margin-top: 1.6rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #4f6f8f;
+        }
+
+        .login-link {
+            color: #1a6dd4;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1.5px solid transparent;
+            transition: 0.2s;
+        }
+
+        .login-link i {
+            font-size: 0.7rem;
+        }
+
+        .login-link:hover {
+            border-bottom-color: #1a6dd4;
+            color: #0f4e96;
+        }
+
+        /* trust / compliance footer */
+        .footer-note {
+            margin-top: 1.8rem;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #8aa0b8;
+            border-top: 1px solid #ecf3fa;
+            padding-top: 1.2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-note span i {
+            margin-right: 5px;
+        }
+
+        /* responsiveness */
+        @media (max-width: 550px) {
+            body {
+                padding: 1rem;
+            }
+            .inner-content {
+                padding: 1.5rem 1.3rem 1.8rem;
+            }
+            .brand-title {
+                font-size: 1.6rem;
+            }
+            .logo-badge {
+                width: 60px;
+                height: 60px;
+            }
+            .logo-badge i {
+                font-size: 30px;
+            }
+            .form-title {
+                font-size: 1.4rem;
+            }
+            .input-group input {
+                padding: 10px 14px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .signup-container {
+                max-width: 560px;
+            }
+            .inner-content {
+                padding: 2.2rem 2.2rem 2.5rem;
+            }
+        }
+
+        button:focus-visible, input:focus-visible {
+            outline: 2px solid #1a6dd4;
+            outline-offset: 2px;
+        }
+
+        /* subtle entrance */
+        .signup-container {
+            animation: fadeSlide 0.4s ease-out;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <div class="inner-content">
+        
+        <!-- brand header (modern, medical identity) -->
+        <div class="brand-header">
+            <div class="logo-badge">
+                <i class="fas fa-notes-medical"></i>
+            </div>
+            <div class="brand-title">Dose4U</div>
+            <div class="brand-tag">Clinical intelligence · Secure platform</div>
+        </div>
+
+        <!-- signup form card -->
+        <div class="form-card">
+            <div class="form-title">Create account</div>
+            <div class="form-sub">Join the trusted medication network</div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fas fa-user-md"></i> <span>Full name</span>
+                </div>
+                <input type="text" id="fullName" placeholder="e.g., Dr. Sarah Johnson" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fas fa-envelope"></i> <span>Email address</span>
+                </div>
+                <input type="email" id="email" placeholder="name@example.com" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fas fa-lock"></i> <span>Password</span>
+                </div>
+                <input type="password" id="password" placeholder="•••••••• (min. 6 characters)">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label">
+                    <i class="fas fa-check-circle"></i> <span>Confirm password</span>
+                </div>
+                <input type="password" id="confirmPass" placeholder="Re-enter password">
+            </div>
+
+            <button id="signupBtn" class="signup-btn">
+                <span>Sign up</span> <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <div class="login-redirect">
+                <span>Already have an account?</span>
+                <a href="Login.html" class="login-link" id="loginRedirectLink">
+                    Sign in <i class="fas fa-sign-in-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- professional compliance strip -->
+        <div class="footer-note">
+            <span><i class="fas fa-shield-alt"></i> Encrypted storage</span>
+            <span><i class="fas fa-database"></i> HIPAA-ready</span>
+            <span><i class="fas fa-prescription-bottle"></i> Clinical reference</span>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDKs + SweetAlert (preserve original functionality) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // -------------------- Firebase configuration (unchanged, original) --------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVP4umc2k6eymoQz5R5oWF9RiCRQ9VqlE",
+      authDomain: "dose4u-b6085.firebaseapp.com",
+      projectId: "dose4u-b6085",
+      storageBucket: "dose4u-b6085.firebasestorage.app",
+      messagingSenderId: "22806799455",
+      appId: "1:22806799455:web:0bd56d584622b1d31127ea",
+      measurementId: "G-M808P3TLKL"
+    };
+
+    // Initialize Firebase (compat)
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const database = firebase.database();
+    const usersRef = database.ref('users');
+
+    // ----- helper: professional notifications (SweetAlert2) -----
+    function showSuccess(msg, callback) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Account created',
+            text: msg,
+            background: '#ffffff',
+            timer: 2000,
+            showConfirmButton: true,
+            confirmButtonColor: '#1a6dd4',
+            backdrop: `rgba(26,109,212,0.1)`
+        }).then(() => {
+            if (callback) callback();
+        });
+    }
+
+    function showError(msg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Registration issue',
+            text: msg,
+            confirmButtonColor: '#d33',
+            background: '#ffffff'
+        });
+    }
+
+    // ----- signup logic (full original behavior: store plain password + redirect to Login.html) -----
+    document.getElementById('signupBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmPass = document.getElementById('confirmPass').value.trim();
+
+        // validation
+        if (!fullName || !email || !password || !confirmPass) {
+            showError('All fields are required ✋');
+            return;
+        }
+        if (password !== confirmPass) {
+            showError('Passwords do not match');
+            return;
+        }
+        if (password.length < 6) {
+            showError('Password must be at least 6 characters');
+            return;
+        }
+
+        // disable button to avoid double submission
+        const btn = document.getElementById('signupBtn');
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+
+        // store user data with actual plaintext password (required for login compatibility)
+        const newUser = {
+            fullName: fullName,
+            email: email,
+            password: password,      // stored as plaintext — matches login verification logic
+            createdAt: new Date().toISOString(),
+            status: 'active'
+        };
+
+        // push to Firebase Realtime Database
+        usersRef.push(newUser)
+            .then(() => {
+                showSuccess('Welcome to Dose4U! Redirecting to login...', () => {
+                    window.location.href = 'Login.html';
+                });
+            })
+            .catch((error) => {
+                console.error('Firebase error:', error);
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                showError('Network issue. Please check your connection and try again 🙏');
+            });
+    });
+
+    // optional: redirect link is clean, no extra overrides
+    const loginLink = document.getElementById('loginRedirectLink');
+    if (loginLink) {
+        loginLink.addEventListener('click', (e) => {
+            // standard navigation preserved, no interference
+        });
+    }
+
+    // small UX: focus first field on load
+    window.addEventListener('load', () => {
+        document.getElementById('fullName').focus();
+    });
+</script>
+</body>
+</html>

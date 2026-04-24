@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dose4U · Professional Dashboard</title>
+  
+  <!-- Google Fonts + Enhanced Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 (free icons, professional look) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #eef2f9 0%, #e0e8f2 100%);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    /* Main card container – elevated, modern, glassmorphism touch */
+    .dashboard {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(0px);
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25), 0 8px 18px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    /* Inner container with spacing */
+    .dashboard-inner {
+      padding: 2rem 2rem 2.5rem;
+    }
+
+    /* Centered logo section - NEW */
+    .logo-centered {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #eef2f9;
+    }
+
+    .logo-icon-centered {
+      background: linear-gradient(135deg, #1e6df2, #0a4bc2);
+      width: 80px;
+      height: 80px;
+      border-radius: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 20px -8px rgba(30,109,242,0.3);
+      margin-bottom: 1rem;
+    }
+
+    .logo-icon-centered i {
+      font-size: 42px;
+      color: white;
+    }
+
+    .logo-centered h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(120deg, #1A2C3E, #1e6df2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .logo-centered p {
+      font-size: 0.85rem;
+      color: #5b6e8c;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    /* Header badge - moved below centered logo, right aligned */
+    .header-badge-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 2rem;
+    }
+
+    .header-badge {
+      background: #f0f4fa;
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1e6df2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-badge i {
+      font-size: 0.9rem;
+    }
+
+    /* professional grid: 4 cards, responsive, with elevation & hover */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      margin: 1rem 0 1rem;
+    }
+
+    .menu-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      border: 1px solid #f0f2f5;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px #e2e9f2;
+      border-color: transparent;
+    }
+
+    .card-content {
+      padding: 1.8rem 1.5rem 1.8rem 1.5rem;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .card-icon-modern {
+      background: #eff5ff;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      font-size: 28px;
+      transition: all 0.2s;
+      color: #1e6df2;
+    }
+
+    .menu-card:hover .card-icon-modern {
+      background: #1e6df2;
+      color: white;
+      transform: scale(0.98);
+    }
+
+    .card-text h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #121f33;
+      letter-spacing: -0.2px;
+      margin-bottom: 8px;
+    }
+
+    .card-text p {
+      font-size: 0.85rem;
+      color: #5b6e8c;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .card-arrow {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+      color: #b9c8f0;
+      transition: all 0.2s;
+    }
+
+    .menu-card:hover .card-arrow {
+      color: #1e6df2;
+      transform: translateX(5px);
+    }
+
+    /* subtle info row or stats - professional touch */
+    .utility-row {
+      margin-top: 2.8rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #ecf2f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: #eef3fc;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      color: #2c5f9a;
+    }
+
+    .status-badge i {
+      margin-right: 6px;
+      font-size: 0.7rem;
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: #7e8aa2;
+      letter-spacing: 0.2px;
+    }
+
+    /* responsive refinements */
+    @media (max-width: 680px) {
+      body {
+        padding: 1rem;
+      }
+      .dashboard-inner {
+        padding: 1.5rem;
+      }
+      .logo-icon-centered {
+        width: 65px;
+        height: 65px;
+      }
+      .logo-icon-centered i {
+        font-size: 34px;
+      }
+      .logo-centered h1 {
+        font-size: 1.6rem;
+      }
+      .card-content {
+        padding: 1.4rem;
+      }
+      .card-text h3 {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-grid {
+        gap: 1rem;
+      }
+      .card-icon-modern {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+      }
+      .header-badge-row {
+        justify-content: center;
+      }
+    }
+
+    /* focus & accessibility */
+    .menu-card:focus-visible {
+      outline: 3px solid #1e6df2;
+      outline-offset: 2px;
+      border-radius: 1.5rem;
+    }
+
+    /* subtle animation */
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(12px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+    .menu-card {
+      animation: fadeSlide 0.4s ease backwards;
+    }
+    .menu-card:nth-child(1) { animation-delay: 0.05s; }
+    .menu-card:nth-child(2) { animation-delay: 0.1s; }
+    .menu-card:nth-child(3) { animation-delay: 0.15s; }
+    .menu-card:nth-child(4) { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<div class="dashboard">
+  <div class="dashboard-inner">
+    
+    <!-- Centered Logo at Top -->
+    <div class="logo-centered">
+      <div class="logo-icon-centered">
+        <i class="fas fa-prescription-bottle"></i>
+      </div>
+      <h1>Dose4U</h1>
+      <p>Precision medication · Intelligent guidance</p>
+    </div>
+
+    <!-- Header badge row - now below centered logo, right aligned -->
+    <div class="header-badge-row">
+      <div class="header-badge">
+        <i class="fas fa-shield-alt"></i> <span>Secure · Clinical reference</span>
+      </div>
+    </div>
+
+    <!-- professional menu grid (4 primary actions) -->
+    <div class="menu-grid">
+      
+      <!-- Know Your Dose -->
+      <a href="doz.html" class="menu-card" aria-label="Know Your Dose: personalized dosage information">
+        <div class="card-content">
+          <div class="card-icon-modern">
+            <i class="fas fa-capsules"></i>
+          </div>
+          <div class="card-text">
+            <h3>Know Your Dose</h3>
+            <p>Evidence-based dosage recommendations, weight-based calculations & safety alerts.</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Medicine in Uganda -->
+      <a href="med.html" class="menu-card" aria-label="Medicine in Uganda: local drug registry & availability">
+        <div class="card-content">
+          <div class="card-icon-modern">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <div class="card-text">
+            <h3>Medicine in Uganda</h3>
+            <p>National formulary, approved generics, pharmacy locator & regulatory updates.</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- About -->
+      <a href="about.html" class="menu-card" aria-label="About Dose4U platform and clinical standards">
+        <div class="card-content">
+          <div class="card-icon-modern">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="card-text">
+            <h3>About</h3>
+            <p>Our mission, clinical partnerships, data privacy and evidence-based approach.</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Logout / session end -->
+      <a href="Login.html" class="menu-card" aria-label="Logout from Dose4U secure portal">
+        <div class="card-content">
+          <div class="card-icon-modern">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          <div class="card-text">
+            <h3>Logout</h3>
+            <p>Securely end your session. Return to login for personalized access.</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- professional additional info: subtle environment / trust signal -->
+    <div class="utility-row">
+      <div class="status-badge">
+        <i class="fas fa-lock"></i> HIPAA & GDPR compliant · clinical references
+      </div>
+      <div class="footer-note">
+        <i class="far fa-clock"></i> Real-time drug database v2.4
+      </div>
+    </div>
+
+  </div> <!-- dashboard-inner -->
+</div> <!-- dashboard -->
+
+<!-- small optional script for any future dynamic effect, purely cosmetic -->
+<script>
+  console.log("Dose4U Professional Dashboard — ready");
+</script>
+</body>
+</html>
